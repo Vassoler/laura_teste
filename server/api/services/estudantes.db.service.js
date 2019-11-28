@@ -10,42 +10,87 @@ class EstudantesDatabase {
     const csv = require("csv-parser");
     const fs = require("fs");
 
-    fs.createReadStream("./dataset_estudantes.csv")
+    return new Promise((resolve, reject) => { fs.createReadStream("./assets/"+process.env.NOMECSV+".csv")
       .pipe(csv())
       .on("data", row => {
         this.model.create(row);
       })
       .on("end", () => {
         console.log("CSV file successfully processed");
-      });
-    return Promise.resolve("Sucesso");
+        resolve("Arquivo CSV processado com sucesso");
+      })
+      .on("error", () => {
+        reject("Falha ao processar arquivo CSV");
+      });;
+    });
   }
 
   all() {
-    return Promise.resolve(this.model.find(null, this.funcaoRetorno));
+    return Promise.resolve(this.model.find(null));
   }
 
   listarModalidade(param) {
     return Promise.resolve(
-      this.model.find(
-        {
-          modalidade: param.modalidade,
-          data_inicio: {
-            $gte: new Date(param.data_inicio),
-            $lt: new Date(param.data_fim)
+      this.model
+        .find(
+          {
+            modalidade: param.modalidade,
+            data_inicio: {
+              $gte: new Date(param.data_inicio),
+              $lt: new Date(param.data_fim)
+            }
           }
-        },
-        this.funcaoRetorno
-      )
+        )
+        .sort({ data_inicio: -1 })
     );
   }
 
-  listarCursos(campus){
-    return Promise.resolve(this.model.distinct('curso', {campus: campus}, this.funcaoRetorno));
+  listarCursos(campus) {
+    return Promise.resolve(
+      this.model.distinct("curso", { campus: campus })
+    );
+  }
+
+  totalAlunos(param) {
+    return Promise.resolve(
+      this.model
+        .find(
+          {
+            campus: param.campus,
+            data_inicio: {
+              $gte: new Date(param.data_inicio),
+              $lt: new Date(param.data_fim)
+            }
+          }
+        ).count()     
+    );
+  }
+
+  byRA(paramRA) {
+    return Promise.resolve(
+      this.model
+        .findOne(
+          {
+            ra: paramRA
+          }
+        )        
+    );
+  }
+
+  deletarEstudante(param) {
+    return Promise.resolve(
+      this.model
+        .deleteOne(
+          {
+            ra: param.ra,
+            campus: param.campus
+          }
+        )        
+    );
   }
 
   byId(id) {
-    return Promise.resolve(this._data[id]);
+    return Promise.resolve(id);
   }
 
   insert(param) {
@@ -53,13 +98,6 @@ class EstudantesDatabase {
     return Promise.resolve(record);
   }
 
-  funcaoRetorno(err, estudantes) {
-    if (err) {
-      throw err;
-    }
-
-    return estudantes;
-  }
 }
 
 export default new EstudantesDatabase();

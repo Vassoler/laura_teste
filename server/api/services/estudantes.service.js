@@ -22,6 +22,22 @@ class EstudantesService {
     return db.listarCursos(campus);
   }
 
+  totalAlunos(param){
+    l.info(`${this.constructor.name}.totalAlunos()`);
+    return db.totalAlunos(param);
+  }
+
+  byRA(ra) {
+    l.info(`${this.constructor.name}.byRA(${ra})`);
+    return db.byRA(ra);
+  }
+
+  deletarEstudante(param){
+    l.info(`${this.constructor.name}.deletarEstudante()`);
+    return db.deletarEstudante(param);
+  }
+
+
   byId(id) {
     l.info(`${this.constructor.name}.byId(${id})`);
     return db.byId(id);

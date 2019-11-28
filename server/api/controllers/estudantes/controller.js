@@ -10,7 +10,7 @@ export class Controller {
   }
 
   listarModalidade(req, res){
-    EstudantesService.listarModalidade(req.body).then(r => {
+    EstudantesService.listarModalidade(req.params).then(r => {
       if (r) res.json(r);
       else res.status(404).end();
     });
@@ -18,6 +18,27 @@ export class Controller {
 
   listarCursos(req, res){
     EstudantesService.listarCursos(req.params.campus).then(r => {
+      if (r) res.json(r);
+      else res.status(404).end();
+    });
+  }
+
+  totalAlunos(req, res){
+    EstudantesService.totalAlunos(req.body).then(r => {
+      if (r) res.json(r);
+      else res.status(404).end();
+    });
+  }
+
+  byRA(req, res) {
+    EstudantesService.byRA(req.params.ra).then(r => {
+      if (r) res.json(r);
+      else res.status(404).end();
+    });
+  }
+
+  deletarEstudante(req, res){
+    EstudantesService.deletarEstudante(req.body).then(r => {
       if (r) res.json(r);
       else res.status(404).end();
     });

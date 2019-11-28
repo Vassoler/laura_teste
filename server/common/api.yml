@@ -49,19 +49,32 @@ definitions:
         type: string
         example: 2015-07-27
 
-  modalidadeBody:
+  totalAlunosBody:
     type: object
     title: estudante
     properties:
-      modalidade:
+      campus:
         type: string
-        example: PRESENCIAL      
+        example: DR      
       data_inicio:
         type: string
         example: 2013-01-01
       data_fim:
         type: string
         example: 2016-01-01
+
+  deletarBody:
+    type: object
+    title: estudante
+    properties:
+      campus:
+        type: string
+        example: AQ 
+      ra:
+        type: number
+        example: 8570
+         
+      
 
 paths:
   /database/popular:
@@ -98,18 +111,27 @@ paths:
         200:
           description: Retorna o estudante inserido
 
-  /estudantes/listarModalidade:
-    post:
+  /estudantes/listarModalidade/{modalidade}/{data_inicio}/{data_fim}:
+    get:
       tags:
         - Estudantes
       description: Retorna todos os itens de uma modalidade em um período ordenados por data.
       parameters:
-        - name: Estudantes
-          in: body
-          description: um estudante
+        - name: modalidade
+          in: path
           required: true
-          schema: 
-            $ref: "#/definitions/modalidadeBody"
+          description: A modalidade a ser buscada.
+          type: string
+        - name: data_inicio
+          in: path
+          required: true
+          description: A data inicial da busca (YYYY-MM-DD).
+          type: string
+        - name: data_fim
+          in: path
+          required: true
+          description: A data final da busca (YYYY-MM-DD).
+          type: string
       responses:
         200:
           description: Retorna todos os itens de uma modalidade em um período ordenados por data.
@@ -132,7 +154,7 @@ paths:
           description: Retorna todos os cursos de um campus.
 
   /estudantes/totalAlunos:
-    get:
+    post:
       tags:
         - Estudantes
       description: Retorna o número total de alunos num campus em um dado período.
@@ -142,12 +164,12 @@ paths:
           description: um estudante
           required: true
           schema: 
-            $ref: "#/definitions/EstudanteBody"
+            $ref: "#/definitions/totalAlunosBody"
       responses:
         200:
           description: Retorna o número total de alunos num campus em um dado período.
 
-  /buscarAluno/{ra}:
+  /estudantes/buscarAluno/{ra}:
     get:
       tags:
         - Estudantes
@@ -190,7 +212,7 @@ paths:
           description: um estudante
           required: true
           schema: 
-            $ref: "#/definitions/EstudanteBody"
+            $ref: "#/definitions/deletarBody"
       responses:
         200:
           description: Retorna o número total de alunos num campus em um dado período.

@@ -13,5 +13,5 @@ var estudantesSchema = new Schema({
     data_inicio: Date
 });
 
-const estudantes = mongoose.model("estudantes", estudantesSchema);
+const estudantes = mongoose.model(process.env.COLLECTION, estudantesSchema);
 module.exports = estudantes;
