@@ -5,8 +5,8 @@ info:
   description: Aplicação desenvolvida para o teste prátido para a vaga de desenvolvedor backend.
 basePath: /api
 tags:
-  - name: Examples
-    description: Simple example endpoints
+  - name: Estudantes
+    description: API para gerenciamento dos estudantes
   - name: Specification
     description: The swagger API specification
 
@@ -17,55 +17,183 @@ produces:
 
 
 definitions:
-  ExampleBody:
+  EstudanteBody:
     type: object
-    title: example
-    required:
-      - name
+    title: estudante
     properties:
-      name:
+      nome:
         type: string
-        example: no_stress
+        example: ADALTO SEBASTIAO DA SILVA JUNIOR
+      idade_ate_31_12_2016:
+        type: number
+        example: 18
+      ra:
+        type: number
+        example: 8570
+      campus:
+        type: string
+        example: AQ
+      municipio:
+        type: string
+        example:  Aquidauana
+      curso:
+        type: string
+        example: TÉCNICO EM INFORMÁTICA
+      modalidade:
+        type: string
+        example: PRESENCIAL
+      nivel_do_curso:
+        type: string
+        example: SUBSEQUENTE
+      data_inicio:
+        type: string
+        example: 2015-07-27
+
+  modalidadeBody:
+    type: object
+    title: estudante
+    properties:
+      modalidade:
+        type: string
+        example: PRESENCIAL      
+      data_inicio:
+        type: string
+        example: 2013-01-01
+      data_fim:
+        type: string
+        example: 2016-01-01
 
 paths:
-  /examples:
-    get:
-      tags:
-        - Examples
-      description: Fetch all examples
-      responses:
-        200:
-          description: Returns all examples
+  /database/popular:
     post:
       tags:
-        - Examples
-      description: Create a new example
-      parameters:
-        - name: example
-          in: body
-          description: an example
-          required: true
-          schema: 
-            $ref: "#/definitions/ExampleBody"
+        - Database
+      description: Popula a base de dados com o arquivo csv
       responses:
         200:
-          description: Returns all examples
+          description: Sucesso
 
-  /examples/{id}:
+  /estudantes:
     get:
       tags:
-        - Examples
+        - Estudantes
+      description: Retorna todos os estudantes na base de dados sem ordenação.
+      responses:
+        200:
+          description: Retorna todos os estudantes na base de dados sem ordenação.
+  
+  /estudantes/novo:
+    post:
+      tags:
+        - Estudantes
+      description: Insere um novo estudante.
+      parameters:
+        - name: Estudantes
+          in: body
+          description: um estudante
+          required: true
+          schema: 
+            $ref: "#/definitions/EstudanteBody"
+      responses:
+        200:
+          description: Retorna o estudante inserido
+
+  /estudantes/listarModalidade:
+    post:
+      tags:
+        - Estudantes
+      description: Retorna todos os itens de uma modalidade em um período ordenados por data.
+      parameters:
+        - name: Estudantes
+          in: body
+          description: um estudante
+          required: true
+          schema: 
+            $ref: "#/definitions/modalidadeBody"
+      responses:
+        200:
+          description: Retorna todos os itens de uma modalidade em um período ordenados por data.
+        404:
+          description: Sem resultado para o filtro.
+
+  /estudantes/listarCursos/{campus}:
+    get:
+      tags:
+        - Estudantes
+      description: Retorna todos os cursos de um campus.
+      parameters:
+        - name: campus
+          in: path
+          required: true
+          description: O campus a ser buscado.
+          type: string
+      responses:
+        200:
+          description: Retorna todos os cursos de um campus.
+
+  /estudantes/totalAlunos:
+    get:
+      tags:
+        - Estudantes
+      description: Retorna o número total de alunos num campus em um dado período.
+      parameters:
+        - name: Estudantes
+          in: body
+          description: um estudante
+          required: true
+          schema: 
+            $ref: "#/definitions/EstudanteBody"
+      responses:
+        200:
+          description: Retorna o número total de alunos num campus em um dado período.
+
+  /buscarAluno/{ra}:
+    get:
+      tags:
+        - Estudantes
+      parameters:
+        - name: ra
+          in: path
+          required: true
+          description: O RA do estudante a ser buscado.
+          type: integer
+      responses:
+        200:
+          description: Retorna o estudante encontrado.
+        404:
+          description: Estudante não encontrado.         
+  
+  /estudantes/{id}:
+    get:
+      tags:
+        - Estudantes
       parameters:
         - name: id
           in: path
           required: true
-          description: The id of the example to retrieve
+          description: O id do estudante a ser buscado
           type: integer
       responses:
         200:
-          description: Return the example with the specified id
+          description: Retorna o estudante encontrado
         404:
-          description: Example not found
+          description: Estudante não encontrado
+
+  /estudantes/deletar:
+    delete:
+      tags:
+        - Estudantes
+      description: Retorna o número total de alunos num campus em um dado período.
+      parameters:
+        - name: Estudantes
+          in: body
+          description: um estudante
+          required: true
+          schema: 
+            $ref: "#/definitions/EstudanteBody"
+      responses:
+        200:
+          description: Retorna o número total de alunos num campus em um dado período.
 
   /spec:
     get:
