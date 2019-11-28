@@ -52,18 +52,27 @@ class EstudantesDatabase {
   }
 
   totalAlunos(param) {
-    return Promise.resolve(
+    return new Promise((resolve, reject) => {
       this.model
-        .find(
+        .count(
           {
             campus: param.campus,
             data_inicio: {
               $gte: new Date(param.data_inicio),
               $lt: new Date(param.data_fim)
             }
+          },
+          (err, resposta) => {
+            if(err){
+              throw err;
+            }
+            let retorno = {};
+            retorno.totalAlunos = resposta;
+            resolve(retorno);
           }
-        ).count()     
-    );
+
+        )   
+      });
   }
 
   byRA(paramRA) {
