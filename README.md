@@ -25,7 +25,6 @@ npm run dev
 
 Install all package dependencies (one time operation)
 
-```shell
 npm install
 ```
 
