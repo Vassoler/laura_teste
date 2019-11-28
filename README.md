@@ -20,11 +20,13 @@ npm install
 # run in development mode
 npm run dev
 
+```
 
 ## Install Dependencies
 
 Install all package dependencies (one time operation)
 
+```shell
 npm install
 ```
 
