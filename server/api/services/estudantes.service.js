@@ -1,5 +1,6 @@
 import l from "../../common/logger";
 import db from "./estudantes.db.service";
+import cache from './../services/cache.service.js';
 
 class EstudantesService {
   popularBase() {
@@ -29,7 +30,8 @@ class EstudantesService {
 
   byRA(ra) {
     l.info(`${this.constructor.name}.byRA(${ra})`);
-    return db.byRA(ra);
+    //return db.byRA(ra);
+    return cache(ra, null);
   }
 
   deletarEstudante(param){
@@ -43,8 +45,9 @@ class EstudantesService {
     return db.byId(id);
   }
 
-  create(name) {
-    return db.insert(name);
+  create(item) {
+    //return db.insert(item);
+    return cache(null, item);
   }
 }
 

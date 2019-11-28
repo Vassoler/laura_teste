@@ -2,6 +2,13 @@
 
 Aplicação desenvolvida para o teste prátido para a vaga de desenvolvedor backend.
 
+## Observações:
+
+ - As variáveis de ambiente estão no arquivo .env.
+ - A rota /database/popular irá popular a base com o arquivo .csv que deve estar dentro da pasta /assets
+ e o nome do arquivo na variável de ambiente NOMECSV.
+ - A documentação da API está no SWAGGER e os testes podem ser feitos pela UI do mesmo.
+
 ## Get Started
 
 Get started developing...
@@ -13,9 +20,6 @@ npm install
 # run in development mode
 npm run dev
 
-# run tests
-npm run test
-```
 
 ## Install Dependencies
 
@@ -46,20 +50,6 @@ Compiles the application and starts it in production production mode.
 ```shell
 npm run compile
 npm start
-```
-
-## Test It
-
-Run the Mocha unit tests
-
-```shell
-npm test
-```
-
-or debug them
-
-```shell
-npm run test:debug
 ```
 
 ## Try It
